@@ -111,13 +111,16 @@ const App = () => {
     if (window.confirm(`Delete ${currentPerson[0].name}?`)) {
       personService
         .removeItem(id)
-        .then(setPersons(persons.filter(person => person.id !== id)))
-        .catch(error => {
-          setErrorMessage(`Infromation of ${currentPerson[0].name} has already been removed from server`)
+        .then(setPersons(persons.filter((person) => person.id !== id)))
+        // eslint-disable-next-line no-unused-vars
+        .catch((error) => {
+          setErrorMessage(
+            `Infromation of ${currentPerson[0].name} has already been removed from server`
+          );
           setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
-            })
+            setErrorMessage(null);
+          }, 5000);
+        });
 
       setMessage(`Deleted contact: ${currentPerson[0].name}`)
       setTimeout(() => {
