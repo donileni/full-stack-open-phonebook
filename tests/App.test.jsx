@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import App from "../src/App";
-import { beforeAll, describe } from "vitest";
+import { beforeAll, describe, vi } from "vitest";
 
 describe("<App />", () => {
   beforeAll(() => {
