@@ -26,6 +26,8 @@ jobs:
 
             - name: Install Playwright browsers
               run: npx playwright install --with-deps
-              
+
             - name: Run e2e tests
+              env:
+                MONGODB_URI: ${{ secrets.MONGODB_URI }}
               run: npm run test:e2e
