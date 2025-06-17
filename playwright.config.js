@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   webServer: {
     command: "npm run start:dev",
-    url: "http://localhost:3001",
+    url: "http://localhost:5173/",
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },
@@ -15,7 +15,7 @@ export default defineConfig({
   reporter: "html",
   use: {
     trace: "on-first-retry",
-    baseURL: "http://localhost:3001",
+    baseURL: "http://localhost:5173/",
   },
 
   projects: [
