@@ -18,3 +18,7 @@ jobs:
               run: npm run eslint
             - name: Run tests
               run: npm test
+            - name: Install Playwright browsers
+              run: npx playwright install --with-deps
+            - name: Run e2e tests
+              run: nom run test:e2e
