@@ -34,6 +34,11 @@ app.get("/version", (req, res) => {
   res.send("2");
 });
 
+app.get("/health", (req, res) => {
+  if (true) throw "error...  ";
+  res.send("ok");
+});
+
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
