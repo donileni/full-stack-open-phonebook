@@ -31,7 +31,7 @@ app.use(cors())
 app.use(express.static('dist'))
 
 app.get("/version", (req, res) => {
-  res.send("5");
+  res.send("6");
 });
 
 app.get("/health", (req, res) => {
