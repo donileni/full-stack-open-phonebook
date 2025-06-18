@@ -30,6 +30,10 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.static('dist'))
 
+app.get("/version", (req, res) => {
+  res.send("2");
+});
+
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
@@ -111,7 +115,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 app.use(errorHandler)
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
