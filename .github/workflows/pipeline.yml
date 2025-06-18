@@ -42,6 +42,16 @@ jobs:
               env:
                 FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
               run: flyctl deploy --remote-only
+            
+            - name: Notification for failed job
+              uses: rjstone/discord-webhook-notify@v2
+              if: ${{ !success() }}
+              with:
+                 webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+                 severity: error
+                 description: commit ${{ github.event.commits[0].url }} by ${{ github.event.commits[0].committer.username  }} broke the build.
+                 text: >
+                  Build failed
     
     tag_release:
         if: ${{ github.event_name == 'push' }}
@@ -57,4 +67,13 @@ jobs:
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 DEFAULT_BUMP: patch
-              
+            - name: Notification for successfull job
+              uses: rjstone/discord-webhook-notify@v2
+              if: ${{ success() }}
+              with:
+                webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+                severity: info
+                description: To https://github.com/donileni/full-stack-open-phonebook
+                details: All steps passed!
+                text: >
+                  A new version of Pokedex deployed
