@@ -35,8 +35,6 @@ app.get("/version", (req, res) => {
 });
 
 app.get("/health", (req, res) => {
-  // eslint-disable-next-line
-  if (true) throw "error...  ";
   res.send("ok");
 });
 
