@@ -1,14 +1,15 @@
-name: Health Check
+# name: Health Check
 
-on:
-  schedule:
-    - cron: "0 * * * *"
+# on:
+#   push:
+#       branches:
+#           - main
 
-jobs:
-  health-check-schedule:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Check deployed URL
-        uses: jtalk/url-health-check-action@v4
-        with:
-          url: https://full-stack-open-phonebook-cold-forest-9220.fly.dev/health
+# jobs:
+#   health-check-schedule:
+#     runs-on: ubuntu-22.04
+#     steps:
+#       - name: Check deployed URL
+#         uses: jtalk/url-health-check-action@v4
+#         with:
+#           url: https://full-stack-open-phonebook-cold-forest-9220.fly.dev/health

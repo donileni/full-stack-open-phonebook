@@ -1,79 +1,79 @@
-name: Deployment pipeline
+# name: Deployment pipeline
 
-on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches: [main]
-        types: [opened, synchronize]
+# on:
+#     push:
+#         branches:
+#             - main
+#     pull_request:
+#         branches: [main]
+#         types: [opened, synchronize]
             
-jobs:
-    simple_pipeline:
-        runs-on: ubuntu-22.04
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                node-version: "20"
-            - name: Install dependencies
-              run: npm install
+# jobs:
+#     simple_pipeline:
+#         runs-on: ubuntu-22.04
+#         steps:
+#             - uses: actions/checkout@v4
+#             - uses: actions/setup-node@v4
+#               with:
+#                 node-version: "20"
+#             - name: Install dependencies
+#               run: npm install
 
-            - name: Build app
-              run: npm run build
+#             - name: Build app
+#               run: npm run build
 
-            - name: Check style
-              run: npm run eslint
+#             - name: Check style
+#               run: npm run eslint
 
-            - name: Run tests
-              run: npm test
+#             - name: Run tests
+#               run: npm test
 
-            - name: Install Playwright browsers
-              run: npx playwright install --with-deps
+#             - name: Install Playwright browsers
+#               run: npx playwright install --with-deps
 
-            - name: Run e2e tests
-              env:
-                MONGODB_URI: ${{ secrets.MONGODB_URI }}
-              run: npm run test:e2e
+#             - name: Run e2e tests
+#               env:
+#                 MONGODB_URI: ${{ secrets.MONGODB_URI }}
+#               run: npm run test:e2e
             
-            - uses: superfly/flyctl-actions/setup-flyctl@master
-            - name: Deploy app to Fly.io
-              if: ${{ github.event_name == 'push' }}
-              env:
-                FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-              run: flyctl deploy --remote-only
+#             - uses: superfly/flyctl-actions/setup-flyctl@master
+#             - name: Deploy app to Fly.io
+#               if: ${{ github.event_name == 'push' }}
+#               env:
+#                 FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+#               run: flyctl deploy --remote-only
             
-            - name: Notification for failed job
-              uses: rjstone/discord-webhook-notify@v2
-              if: ${{ !success() }}
-              with:
-                 webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-                 severity: error
-                 description: commit ${{ github.event.commits[0].url }} by ${{ github.event.commits[0].committer.username  }} broke the build.
-                 text: >
-                  Build failed
+#             - name: Notification for failed job
+#               uses: rjstone/discord-webhook-notify@v2
+#               if: ${{ !success() }}
+#               with:
+#                  webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+#                  severity: error
+#                  description: commit ${{ github.event.commits[0].url }} by ${{ github.event.commits[0].committer.username  }} broke the build.
+#                  text: >
+#                   Build failed
     
-    tag_release:
-        if: ${{ github.event_name == 'push' }}
-        needs: [simple_pipeline]
-        runs-on: ubuntu-22.04
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                node-version: '20'
-            - name: bump version and push tag
-              uses: anothrNick/github-tag-action@1.73.0
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                DEFAULT_BUMP: patch
-            - name: Notification for successfull job
-              uses: rjstone/discord-webhook-notify@v2
-              if: ${{ success() }}
-              with:
-                webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-                severity: info
-                description: To https://github.com/donileni/full-stack-open-phonebook
-                details: All steps passed!
-                text: >
-                  A new version of Phonebook deployed
+#     tag_release:
+#         if: ${{ github.event_name == 'push' }}
+#         needs: [simple_pipeline]
+#         runs-on: ubuntu-22.04
+#         steps:
+#             - uses: actions/checkout@v4
+#             - uses: actions/setup-node@v4
+#               with:
+#                 node-version: '20'
+#             - name: bump version and push tag
+#               uses: anothrNick/github-tag-action@1.73.0
+#               env:
+#                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#                 DEFAULT_BUMP: patch
+#             - name: Notification for successfull job
+#               uses: rjstone/discord-webhook-notify@v2
+#               if: ${{ success() }}
+#               with:
+#                 webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+#                 severity: info
+#                 description: To https://github.com/donileni/full-stack-open-phonebook
+#                 details: All steps passed!
+#                 text: >
+#                   A new version of Phonebook deployed
